@@ -1,0 +1,4 @@
+Hello everyone. This is my effort to gradually create a PHP wrapper class 
+for the great bit.ly service for shortening URLs.
+You will need a username and an API key from bitly to test this class, which you can easily obtain after registering.
+Any feedback will be appreciated.
