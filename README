@@ -4,5 +4,5 @@ create a PHP wrapper class for the great bit.ly service for shortening URLs.
 which you can easily obtain after registering.
 I tried to make it compact but flexible. It allows both formats, JSON and XML for the response. 
 Keep in mind that the service has rate limiting which resets every hour or so.
-You can read the complete documentation here http://code.google.com/p/bitly-api/wiki/ApiDocumentation .
+You can read the complete documentation here http://dev.bitly.com/ .
 Any feedback will be much appreciated.
