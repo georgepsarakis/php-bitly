@@ -1,5 +1,8 @@
 <?php
-  //This file must be copied to an unversioned (local) copy named as settings.php for the test to work
+  /*
+   * This file must be copied to an unversioned (local) copy 
+   * named settings.php for the test to work
+   */
   /**
    * Your API key, you can find it on your account http://bitly.com/a/settings/advanced (Legacy API Key)
    */

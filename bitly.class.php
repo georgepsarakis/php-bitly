@@ -23,6 +23,7 @@ class Bitly {
       $this->setApiKey($key);
       $this->setUsername($user);
     }
+    // Interface detection for prettier printing
     $this->is_cli = php_sapi_name() == 'cli'; 
   }
   
