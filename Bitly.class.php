@@ -4,12 +4,13 @@ class Bitly {
   const API_KEY_LENGTH = 34;
   const CONVERSION_SHORT_2_LONG = 1;
   const CONVERSION_LONG_2_SHORT = 2;
+
   private   $apikey = '';
   private   $username = '';
   protected $format = 'json';
   private   $permitted_formats = array('json', 'xml');
   private   $is_cli = FALSE;
-  protected $response = null;
+  public    $response = null;
   protected $raw_response = '';
   protected $permitted_methods = array('shorten', 'expand', 'validate', 'countries', 'info'); 
   protected $_MESSAGES = array(
@@ -41,7 +42,12 @@ class Bitly {
     return $this->apikey;
   }
   
-  protected function isValidApiKey($apikey) {
+  public function isApiMethod($method) {
+    $method = strtolower($method);
+    return in_array($method, $this->permitted_methods);
+  }
+   
+  public function isValidApiKey($apikey) {
     $is_valid = preg_match('/[^a-z0-9\_]/i', $apikey, $matches) == 0;
     $is_valid = $is_valid && ( strlen($apikey) == self::API_KEY_LENGTH );
     return $is_valid;
@@ -79,16 +85,16 @@ class Bitly {
     return $this;
   }
   
-  public function get_short_url($long_url){
+  public function get_short_url($long_url) {
     $params = array('longUrl' => $long_url);
     $this->execute_method('shorten', $params);
-    return $this;
+    return $this->response;
   }
   
   public function get_long_url($short_url){
     $params = array('shortUrl' => $short_url);
     $this->execute_method('expand', $params);
-    return $this;
+    return $this->response;
   }
   
   // get the authorization part of the query string
@@ -110,35 +116,63 @@ class Bitly {
   
 }
 
-/*
-  A very short class to contain the processed response data.
-  This may be expanded with some response processing functions
-  in the future.
-*/
+/**
+ * A very short class to contain the processed response data.
+ * This may be expanded with some response processing functions
+ * in the future.
+ *
+ * @author George Psarakis
+ */
 class BitlyResponse {
-  protected $status_code = 0;
-  protected $status_txt  = '';
-  protected $long_url    = '';
-  protected $url         = '';
-  protected $hash        = '';
-  protected $response    = '';
+  /**
+   * @var public $status_code The response status code
+   */
+  public    $status_code = 0;
+  /**
+   * @var public $status_txt Response status text
+   */
+  public    $status_txt  = '';
+  /**
+   * @var public $long_url Long URL
+   */
+  public    $long_url    = '';
+  /**
+   * @var public $url Shortened URL
+   */
+  public    $url         = '';
+  /**
+   * @var public $hash The URL hash code
+   */
+  public    $hash        = '';
+  /**
+   * @var public $response Array storing the entire response
+   */
+  public    $response    = array();
   
   function __construct($r, $format) {
      if ( $format == 'json' )
       $r = json_decode($r, TRUE);
     else if( $format == 'xml' )
       $r = json_decode( json_encode( simplexml_load_string($r) ), TRUE);   
+    
     $this->response = $r;
+    
     if ( array_key_exists('entry', $this->response['data']) )
       $this->response['data'] = $this->response['data']['entry'];
+    if ( array_key_exists('expand', $this->response['data']) ) 
+       $this->response['data'] = $this->response['data']['expand'][0];
+   
     $this->status_txt = $this->response['status_txt'];
     $this->status_code = $this->response['status_code'];
 
     if( intval($this->status_code) != 200 )
       throw new BitlyException('Bitly API Exception raised with Code '.$this->status_code . ', ' . $this->status_txt);
-    $this->long_url = $this->response['data']['long_url'];
+
+    $this->long_url = rtrim($this->response['data']['long_url'], '/');
+    
     if ( array_key_exists('url', $this->response['data']) )
       $this->url = $this->response['data']['url'];
+    
     if ( array_key_exists('hash', $this->response['data']) )
       $this->hash = $this->response['data']['hash'];
 
@@ -154,17 +188,19 @@ class BitlyResponse {
 }
 
 class BitlyException extends Exception {
-  private $_TEMPLATES = array('web' => "<pre>\n{MESSAGE}<br />\n</pre>\n",
-                              'cli' => "{MESSAGE}\n"
+  private $_TEMPLATES = array(
+                                'web' => "<pre>\n{MESSAGE}<br />\n</pre>\n",
+                                'cli' => "{MESSAGE}\n"
                              );
   private $interface_template = '';
-  function __construct($message, $interface = 'web') {
+
+  function __construct($message) {
     parent::__construct($message);
-    $this->interface_template = $this->_TEMPLATES[strtolower($interface)];
     $this->interface_template = (php_sapi_name() == 'cli') ? 'cli' : 'web';
   }
 
   public function __toString() {
-    return __CLASS__ . ": " . str_replace('{MESSAGE}', $this->message, $_this->_TEMPLATES[$this->interface_template]);
+    $message =  str_replace('{MESSAGE}', $this->message, $_this->_TEMPLATES[$this->interface_template]);
+    return __CLASS__ . ": " . $message;
   }
 }

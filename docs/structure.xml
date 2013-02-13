@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project version="2.0.0a10" title="">
+  <file path="Bitly.class.php" hash="7c9ddb5c8f49bc0a7f4a85eb85df68a7" package="Default">
+    <class final="false" abstract="false" namespace="global" line="2" package="Default">
+      <extends/>
+      <name>Bitly</name>
+      <full_name>\Bitly</full_name>
+      <constant namespace="global" line="3" package="Default">
+        <name>API_BASE_URL</name>
+        <full_name>API_BASE_URL</full_name>
+        <value><![CDATA['http://api.bitly.com/v3/']]></value>
+      </constant>
+      <constant namespace="global" line="4" package="Default">
+        <name>API_KEY_LENGTH</name>
+        <full_name>API_KEY_LENGTH</full_name>
+        <value><![CDATA[34]]></value>
+      </constant>
+      <constant namespace="global" line="5" package="Default">
+        <name>CONVERSION_SHORT_2_LONG</name>
+        <full_name>CONVERSION_SHORT_2_LONG</full_name>
+        <value><![CDATA[1]]></value>
+      </constant>
+      <constant namespace="global" line="6" package="Default">
+        <name>CONVERSION_LONG_2_SHORT</name>
+        <full_name>CONVERSION_LONG_2_SHORT</full_name>
+        <value><![CDATA[2]]></value>
+      </constant>
+      <property final="false" static="false" visibility="private" line="8" namespace="global" package="Default">
+        <name>$apikey</name>
+        <default><![CDATA['']]></default>
+      </property>
+      <property final="false" static="false" visibility="private" line="9" namespace="global" package="Default">
+        <name>$username</name>
+        <default><![CDATA['']]></default>
+      </property>
+      <property final="false" static="false" visibility="protected" line="10" namespace="global" package="Default">
+        <name>$format</name>
+        <default><![CDATA['json']]></default>
+      </property>
+      <property final="false" static="false" visibility="private" line="11" namespace="global" package="Default">
+        <name>$permitted_formats</name>
+        <default><![CDATA[array('json', 'xml')]]></default>
+      </property>
+      <property final="false" static="false" visibility="private" line="12" namespace="global" package="Default">
+        <name>$is_cli</name>
+        <default><![CDATA[FALSE]]></default>
+      </property>
+      <property final="false" static="false" visibility="public" line="13" namespace="global" package="Default">
+        <name>$response</name>
+        <default><![CDATA[null]]></default>
+      </property>
+      <property final="false" static="false" visibility="protected" line="14" namespace="global" package="Default">
+        <name>$raw_response</name>
+        <default><![CDATA['']]></default>
+      </property>
+      <property final="false" static="false" visibility="protected" line="15" namespace="global" package="Default">
+        <name>$permitted_methods</name>
+        <default><![CDATA[array('shorten', 'expand', 'validate', 'countries', 'info')]]></default>
+      </property>
+      <property final="false" static="false" visibility="protected" line="16" namespace="global" package="Default">
+        <name>$_MESSAGES</name>
+        <default><![CDATA[array('INVALID_FORMAT' => 'Valid formats are JSON & XML.', 'INVALID_KEY' => 'Invalid key -> ', 'INVALID_API_METHOD' => 'Method not allowed.')]]></default>
+      </property>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="22" package="Default">
+        <name>__construct</name>
+        <full_name>__construct</full_name>
+        <argument line="22">
+          <name>$user</name>
+          <default><![CDATA['']]></default>
+          <type/>
+        </argument>
+        <argument line="22">
+          <name>$key</name>
+          <default><![CDATA['']]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="31" package="Default">
+        <name>setFormat</name>
+        <full_name>setFormat</full_name>
+        <argument line="31">
+          <name>$format</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="41" package="Default">
+        <name>getApiKey</name>
+        <full_name>getApiKey</full_name>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="45" package="Default">
+        <name>isApiMethod</name>
+        <full_name>isApiMethod</full_name>
+        <argument line="45">
+          <name>$method</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="50" package="Default">
+        <name>isValidApiKey</name>
+        <full_name>isValidApiKey</full_name>
+        <argument line="50">
+          <name>$apikey</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="56" package="Default">
+        <name>setApiKey</name>
+        <full_name>setApiKey</full_name>
+        <argument line="56">
+          <name>$apikey</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="65" package="Default">
+        <name>setUsername</name>
+        <full_name>setUsername</full_name>
+        <argument line="65">
+          <name>$username</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="69" package="Default">
+        <name>getUsername</name>
+        <full_name>getUsername</full_name>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="private" namespace="global" line="73" package="Default">
+        <name>execute_method</name>
+        <full_name>execute_method</full_name>
+        <argument line="73">
+          <name>$method</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="73">
+          <name>$params</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="88" package="Default">
+        <name>get_short_url</name>
+        <full_name>get_short_url</full_name>
+        <argument line="88">
+          <name>$long_url</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="94" package="Default">
+        <name>get_long_url</name>
+        <full_name>get_long_url</full_name>
+        <argument line="94">
+          <name>$short_url</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="private" namespace="global" line="101" package="Default">
+        <name>get_auth</name>
+        <full_name>get_auth</full_name>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="private" namespace="global" line="107" package="Default">
+        <name>analyze_response</name>
+        <full_name>analyze_response</full_name>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="113" package="Default">
+        <name>__toString</name>
+        <full_name>__toString</full_name>
+      </method>
+    </class>
+    <class final="false" abstract="false" namespace="global" line="126" package="Default">
+      <extends/>
+      <name>BitlyResponse</name>
+      <full_name>\BitlyResponse</full_name>
+      <docblock line="119">
+        <description><![CDATA[A very short class to contain the processed response data.]]></description>
+        <long-description><![CDATA[<p>This may be expanded with some response processing functions
+in the future.</p>]]></long-description>
+        <tag line="119" name="author" description="George Psarakis"/>
+      </docblock>
+      <property final="false" static="false" visibility="public" line="130" namespace="global" package="Default">
+        <name>$status_code</name>
+        <default><![CDATA[0]]></default>
+        <docblock line="127">
+          <description><![CDATA[]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="127" name="var" description="The response status code" type="\public">
+            <type by_reference="false">\public</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="134" namespace="global" package="Default">
+        <name>$status_txt</name>
+        <default><![CDATA['']]></default>
+        <docblock line="131">
+          <description><![CDATA[]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="131" name="var" description="Response status text" type="\public">
+            <type by_reference="false">\public</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="138" namespace="global" package="Default">
+        <name>$long_url</name>
+        <default><![CDATA['']]></default>
+        <docblock line="135">
+          <description><![CDATA[]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="135" name="var" description="Long URL" type="\public">
+            <type by_reference="false">\public</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="142" namespace="global" package="Default">
+        <name>$url</name>
+        <default><![CDATA['']]></default>
+        <docblock line="139">
+          <description><![CDATA[]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="139" name="var" description="Shortened URL" type="\public">
+            <type by_reference="false">\public</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="146" namespace="global" package="Default">
+        <name>$hash</name>
+        <default><![CDATA['']]></default>
+        <docblock line="143">
+          <description><![CDATA[]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="143" name="var" description="The URL hash code" type="\public">
+            <type by_reference="false">\public</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="150" namespace="global" package="Default">
+        <name>$response</name>
+        <default><![CDATA[array()]]></default>
+        <docblock line="147">
+          <description><![CDATA[]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="147" name="var" description="Array storing the entire response" type="\public">
+            <type by_reference="false">\public</type>
+          </tag>
+        </docblock>
+      </property>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="152" package="Default">
+        <name>__construct</name>
+        <full_name>__construct</full_name>
+        <argument line="152">
+          <name>$r</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="152">
+          <name>$format</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="185" package="Default">
+        <name>__toString</name>
+        <full_name>__toString</full_name>
+      </method>
+    </class>
+    <class final="false" abstract="false" namespace="global" line="190" package="Default">
+      <extends>\Exception</extends>
+      <name>BitlyException</name>
+      <full_name>\BitlyException</full_name>
+      <property final="false" static="false" visibility="private" line="191" namespace="global" package="Default">
+        <name>$_TEMPLATES</name>
+        <default><![CDATA[array('web' => "<pre>\n{MESSAGE}<br />\n</pre>\n", 'cli' => "{MESSAGE}\n")]]></default>
+      </property>
+      <property final="false" static="false" visibility="private" line="195" namespace="global" package="Default">
+        <name>$interface_template</name>
+        <default><![CDATA['']]></default>
+      </property>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="197" package="Default">
+        <name>__construct</name>
+        <full_name>__construct</full_name>
+        <argument line="197">
+          <name>$message</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="202" package="Default">
+        <name>__toString</name>
+        <full_name>__toString</full_name>
+      </method>
+    </class>
+    <parse_markers>
+      <error line="0" code="50007">No page-level DocBlock was found in file Bitly.class.php</error>
+      <error line="2" code="50000">No DocBlock was found for \Bitly</error>
+      <error line="8" code="50018">No DocBlock was found for property $apikey</error>
+      <error line="9" code="50018">No DocBlock was found for property $username</error>
+      <error line="10" code="50018">No DocBlock was found for property $format</error>
+      <error line="11" code="50018">No DocBlock was found for property $permitted_formats</error>
+      <error line="12" code="50018">No DocBlock was found for property $is_cli</error>
+      <error line="13" code="50018">No DocBlock was found for property $response</error>
+      <error line="14" code="50018">No DocBlock was found for property $raw_response</error>
+      <error line="15" code="50018">No DocBlock was found for property $permitted_methods</error>
+      <error line="16" code="50018">No DocBlock was found for property $_MESSAGES</error>
+      <error line="22" code="50010">No DocBlock was found for method __construct()</error>
+      <error line="31" code="50010">No DocBlock was found for method setFormat()</error>
+      <error line="41" code="50010">No DocBlock was found for method getApiKey()</error>
+      <error line="45" code="50010">No DocBlock was found for method isApiMethod()</error>
+      <error line="50" code="50010">No DocBlock was found for method isValidApiKey()</error>
+      <error line="56" code="50010">No DocBlock was found for method setApiKey()</error>
+      <error line="65" code="50010">No DocBlock was found for method setUsername()</error>
+      <error line="69" code="50010">No DocBlock was found for method getUsername()</error>
+      <error line="73" code="50010">No DocBlock was found for method execute_method()</error>
+      <error line="88" code="50010">No DocBlock was found for method get_short_url()</error>
+      <error line="94" code="50010">No DocBlock was found for method get_long_url()</error>
+      <error line="101" code="50010">No DocBlock was found for method get_auth()</error>
+      <error line="107" code="50010">No DocBlock was found for method analyze_response()</error>
+      <error line="113" code="50010">No DocBlock was found for method __toString()</error>
+      <error line="152" code="50010">No DocBlock was found for method __construct()</error>
+      <error line="185" code="50010">No DocBlock was found for method __toString()</error>
+      <error line="190" code="50000">No DocBlock was found for \BitlyException</error>
+      <error line="191" code="50018">No DocBlock was found for property $_TEMPLATES</error>
+      <error line="195" code="50018">No DocBlock was found for property $interface_template</error>
+      <error line="197" code="50010">No DocBlock was found for method __construct()</error>
+      <error line="202" code="50010">No DocBlock was found for method __toString()</error>
+    </parse_markers>
+  </file>
+  <package name="Default" full_name="Default"/>
+  <namespace name="global" full_name="global"/>
+  <marker count="0">todo</marker>
+  <marker count="0">fixme</marker>
+  <deprecated count="0"/>
+</project>
