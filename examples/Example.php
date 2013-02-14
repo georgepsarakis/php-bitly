@@ -1,6 +1,6 @@
 <?php
-require_once '../settings.php';
 require_once '../Bitly.class.php';
+require_once '../settings.php';
 
 try {
   $bitly = new Bitly();

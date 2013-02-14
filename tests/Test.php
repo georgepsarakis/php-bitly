@@ -12,18 +12,18 @@ class BitlyTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testGetApiKey() {
-      $this->assertEquals(BITLY_API_KEY, $this->b->getApiKey());
+      $this->assertEquals(BITLY_API_KEY, $this->b->getAPIKey());
     }
     
     public function testIsValidApiKey() {
 
-      $this->assertTrue($this->b->isValidApiKey($this->b->getApiKey()));
+      $this->assertTrue($this->b->isValidAPIKey($this->b->getAPIKey()));
       // Testing for illegal character
       $sample_key = str_repeat('a', 33) . '*';
-      $this->assertFalse($this->b->isValidApiKey( $sample_key ));
+      $this->assertFalse($this->b->isValidAPIKey( $sample_key ));
       // Testing for key length
       $sample_key = str_repeat('a', 35);
-      $this->assertFalse($this->b->isValidApiKey( $sample_key ));
+      $this->assertFalse($this->b->isValidAPIKey( $sample_key ));
 
     }
     
@@ -36,14 +36,14 @@ class BitlyTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testIsApiMethod() {
-      $this->assertFalse($this->b->isApiMethod('a random method'));
-      $this->assertTrue($this->b->isApiMethod('shorten'));
+      $this->assertFalse($this->b->isAPIMethod('a random method'));
+      $this->assertTrue($this->b->isAPIMethod('shorten'));
     }
 
     public function testException() {
         try {
           $this->b->setFormat('JSONP');
-        } catch (BitlyException $expected) {
+        } catch ( BitlyException $expected ) {
           return;
         } 
         $this->fail('Unexpected exception raised.');
